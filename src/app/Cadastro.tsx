@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { FaUser, FaEnvelope, FaLock, FaBook, FaBuilding } from 'react-icons/fa';  // Importando os ícones
+import { FaUser, FaEnvelope, FaLock, FaBook, FaBuilding } from 'react-icons/fa';  
 import { useRouter } from 'next/navigation';
 
 const Cadastro: React.FC = () => {
@@ -20,7 +20,7 @@ const Cadastro: React.FC = () => {
   };
 
   const handleLoginClick = () => {
-    router.push('/login'); // Altere para a rota de login adequada
+    router.push('/login'); 
   };
 
   return (
