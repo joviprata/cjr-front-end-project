@@ -20,7 +20,7 @@ const Cadastro: React.FC = () => {
   };
 
   const handleLoginClick = () => {
-    router.push('/login'); 
+    router.push('/Login'); 
   };
 
   return (
