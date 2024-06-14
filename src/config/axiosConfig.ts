@@ -7,11 +7,10 @@ const axiosInstance = axios.create({
   },
 });
 
-
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API error:', error);
+    console.error('Erro na API:', error);
     return Promise.reject(error);
   }
 );
