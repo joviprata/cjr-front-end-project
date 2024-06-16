@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaBook, FaBuilding } from 'react-icons/fa';  
 import { useRouter } from 'next/navigation';
+import axiosInstance from '@/config/axiosConfig';
 
 const Cadastro: React.FC = () => {
   const [nome, setNome] = useState('');
@@ -10,18 +11,53 @@ const Cadastro: React.FC = () => {
   const [senha, setSenha] = useState('');
   const [curso, setCurso] = useState('');
   const [departamento, setDepartamento] = useState('');
+  const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    setHydrated(true); 
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ nome, email, senha, curso, departamento });
-    setSuccess(true);
+    
+    try {
+      const response = await axiosInstance.post('/user/register', {
+        name: nome,
+        email: email,
+        password: senha,
+        course: curso,
+        departament: departamento
+      });
+      
+      console.log('Response:', response); // Adicione este log para verificar a resposta
+  
+      if (response.status === 201) {
+        setSuccess(true);
+        setMessage('Cadastro realizado com sucesso!');
+      }
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
+      setSuccess(false);
+      if (error.response && error.response.data && error.response.data.message) {
+        setMessage(`Erro ao realizar o cadastro: ${error.response.data.message}`);
+      } else {
+        setMessage('Erro ao realizar o cadastro. Tente novamente.');
+      }
+    }
   };
+  
+  
 
   const handleLoginClick = () => {
     router.push('/Login'); 
   };
+
+  if (!hydrated) {
+    return null; 
+  }
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -98,7 +134,9 @@ const Cadastro: React.FC = () => {
               <button type="submit" className="p-3 w-40 bg-teal-500 text-white rounded-md hover:bg-cyan-500 transition duration-300 transform hover:scale-105">
                 Criar Conta
               </button>
-              {success && <p className="text-green-500 mt-4 text-lg">Cadastro realizado com sucesso!</p>}
+              {message && (
+                <p className={`mt-4 text-lg ${success ? 'text-green-500' : 'text-red-500'}`}>{message}</p>
+              )}
             </form>
           </div>
         </div>

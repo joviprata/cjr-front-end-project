@@ -7,6 +7,21 @@ const axiosInstance = axios.create({
   },
 });
 
+// Interceptor de requisição para adicionar o token JWT ao cabeçalho
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token'); // Supondo que o token JWT está armazenado no localStorage
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Interceptor de resposta para capturar e tratar erros
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
