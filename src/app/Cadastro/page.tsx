@@ -38,7 +38,7 @@ const Cadastro: React.FC = () => {
         setSuccess(true);
         setMessage('Cadastro realizado com sucesso!');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao registrar usuário:', error);
       setSuccess(false);
       if (error.response && error.response.data && error.response.data.message) {
